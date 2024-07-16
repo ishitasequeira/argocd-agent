@@ -68,8 +68,10 @@ apply() {
 	echo "-> TMP_DIR is $TMP_DIR"
 	cp -r ${SCRIPTPATH}/* $TMP_DIR
 
-	sed -i "s/repo-server-address/$REPO_SERVER_ADDR/g" "$TMP_DIR/agent-managed/argocd-cmd-params-cm.yaml"
-	sed -i "s/redis-server-address/$REDIS_ADDR/g" "$TMP_DIR/agent-managed/argocd-cmd-params-cm.yaml"
+	echo $REPO_SERVER_ADDR
+	echo $REDIS_ADDR
+	sed -i '' "s/repo-server-address/$REPO_SERVER_ADDR/g" "$TMP_DIR/agent-managed/argocd-cmd-params-cm.yaml"
+	sed -i '' "s/redis-server-address/$REDIS_ADDR/g" "$TMP_DIR/agent-managed/argocd-cmd-params-cm.yaml"
 
 	echo "-> Creating Argo CD instances in vclusters"
 	for c in $VCLUSTERS_ARGOCD; do
@@ -119,14 +121,14 @@ create)
 
 
 
-	sleep 60s
+	sleep 60
 
 	echo "-> Creating required vclusters"
 	for c in $VCLUSTERS; do
 		cluster=$(cluster $c)
  		echo "  --> Creating vcluster $cluster"
 		vcluster create --context=${initial_context} -f $SCRIPTPATH/vcluster.yaml -n vcluster-${cluster} --expose --kube-config-context-name vcluster-${cluster} vcluster-${cluster}
-		sleep 60s
+		sleep 60
 	done
 	sleep 2
 	apply

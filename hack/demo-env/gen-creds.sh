@@ -11,7 +11,7 @@ set -ex -o pipefail
 
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 htpasswd=$(which htpasswd)
-pwmake=$(which pwmake)
+pwgen=$(which pwgen)
 creds_path=${SCRIPTPATH}/creds
 test -d ${creds_path} || mkdir ${creds_path}
 
@@ -22,7 +22,7 @@ fi
 touch "${creds_path}/users.control-plane"
 
 for ag in agent-managed agent-autonomous; do
-	password=$(pwmake 56)
+	password=$(pwgen 56)
 	htpasswd -b -B "${creds_path}/users.control-plane" "${ag}" "${password}"
 	echo "${ag}:${password}" > "${creds_path}/creds.${ag}"
 done
