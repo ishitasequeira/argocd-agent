@@ -55,7 +55,7 @@ var noAuthEndpoints = map[string]bool{
 	"/authapi.Authentication/Authenticate": true,
 }
 
-const waitForSyncedDuration = 1 * time.Second
+const waitForSyncedDuration = 10 * time.Second
 
 func NewServer(ctx context.Context, appClient appclientset.Interface, namespace string, opts ...ServerOption) (*Server, error) {
 	s := &Server{
